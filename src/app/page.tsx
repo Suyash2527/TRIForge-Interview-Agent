@@ -1,6 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+const AiCore = dynamic(() => import('@/components/AiCore'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center text-[10px] animate-pulse">✨</div>
+});
 
 export default function Home() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
@@ -93,8 +99,8 @@ export default function Home() {
       {/* Sleek Navigation Header */}
       <header className="h-14 border-b border-[var(--border-color)] flex items-center justify-between px-6 shrink-0 bg-[var(--bg-color)]/80 backdrop-blur-md z-10">
         <div className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded bg-[var(--primary)] flex items-center justify-center text-xs">
-            ✨
+          <div className="w-8 h-8 flex items-center justify-center -ml-1">
+            <AiCore isGenerating={loading} />
           </div>
           <div className="flex flex-col">
             <h1 className="text-sm font-semibold text-white leading-tight">AI Interviewer</h1>
@@ -167,7 +173,9 @@ export default function Home() {
                   <div className="flex items-center gap-2 px-1">
                     {m.role === 'agent' && (
                       <>
-                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[var(--surface-secondary)] border border-[var(--border-color)] text-xs">✨</div>
+                        <div className="w-6 h-6 flex items-center justify-center">
+                          <AiCore isGenerating={false} />
+                        </div>
                         <span className="text-xs font-medium text-[var(--text-secondary)]">AI Interviewer</span>
                       </>
                     )}
@@ -198,7 +206,9 @@ export default function Home() {
               {loading && (
                 <div className="flex flex-col gap-1.5 items-start animate-slide-up">
                   <div className="flex items-center gap-2 px-1">
-                    <div className="w-5 h-5 rounded flex items-center justify-center bg-[var(--surface-secondary)] border border-[var(--border-color)] text-xs">✨</div>
+                    <div className="w-6 h-6 flex items-center justify-center">
+                      <AiCore isGenerating={true} />
+                    </div>
                     <span className="text-xs font-medium text-[var(--text-secondary)]">AI Interviewer</span>
                   </div>
                   <div className="px-5 py-4 msg-agent premium-panel shadow-none rounded-2xl rounded-tl-sm flex items-center gap-1.5">
@@ -272,18 +282,18 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Mock Metrics Radar/Grid */}
+                    {/* Metrics Radar/Grid */}
                     <div>
                       <h3 className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-4">Competency Radar</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
-                          { label: 'Technical Depth', val: '94%' },
-                          { label: 'Communication', val: '88%' },
-                          { label: 'Problem Solving', val: '92%' },
-                          { label: 'System Design', val: '85%' },
+                          { label: 'Technical Depth', val: feedback.scores?.technicalDepth ?? 0 },
+                          { label: 'Communication', val: feedback.scores?.communication ?? 0 },
+                          { label: 'Problem Solving', val: feedback.scores?.problemSolving ?? 0 },
+                          { label: 'System Design', val: feedback.scores?.systemDesign ?? 0 },
                         ].map((stat, i) => (
                           <div key={i} className="premium-subpanel p-4 flex flex-col gap-1 items-center justify-center text-center">
-                            <span className="text-xl font-semibold text-white">{stat.val}</span>
+                            <span className="text-xl font-semibold text-white">{stat.val}%</span>
                             <span className="text-[10px] text-[var(--text-secondary)] uppercase">{stat.label}</span>
                           </div>
                         ))}

@@ -64,7 +64,13 @@ Conclude when BOTH: (a) >=8 questions across >=4 distinct days, and (b) enough e
   "grade": "PASS|FAIL",
   "summary": "Detailed summary...",
   "strengths": ["...", "..."],
-  "weaknesses": ["...", "..."]
+  "weaknesses": ["...", "..."],
+  "scores": {
+    "technicalDepth": 85,
+    "communication": 90,
+    "problemSolving": 75,
+    "systemDesign": 80
+  }
 }
 \`\`\`
 `;
