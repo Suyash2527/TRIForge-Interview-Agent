@@ -29,7 +29,7 @@ function CoreShape({ isGenerating = false }: AiCoreProps) {
   });
 
   return (
-    <Icosahedron ref={meshRef as any} args={[1.2, 4]}>
+    <Icosahedron ref={meshRef as any} args={[0.8, 4]}>
       <MeshDistortMaterial
         color={isGenerating ? "#7C5CFC" : "#4F8CFF"}
         wireframe={true}
