@@ -182,7 +182,7 @@ export default function Home() {
                     {m.role === 'candidate' && (
                       <span className="text-xs font-medium text-[var(--text-secondary)]">You</span>
                     )}
-                    <span className="text-[10px] text-gray-600">
+                    <span className="text-[10px] text-gray-600" suppressHydrationWarning>
                       {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                     </span>
                   </div>
