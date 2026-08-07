@@ -1,14 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-
-const AiCore = dynamic(() => import('@/components/AiCore'), {
-  ssr: false,
-  loading: () => <div className="w-full h-full flex items-center justify-center text-[10px] animate-pulse">✨</div>
-});
-
-const BackgroundLiquid = dynamic(() => import('@/components/BackgroundLiquid'), { ssr: false });
+import AiCore from '@/components/AiCore';
+import BackgroundLiquid from '@/components/BackgroundLiquid';
 
 export default function Home() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
