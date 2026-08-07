@@ -13,16 +13,27 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<any>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, feedback]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || loading) return;
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 240)}px`;
+    }
+  };
 
-    const userMessage = { role: 'candidate', content: input };
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [input]);
+
+  const submitMessage = async (text: string) => {
+    if (!text.trim() || loading || feedback !== null) return;
+
+    const userMessage = { role: 'candidate', content: text };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
@@ -52,8 +63,25 @@ export default function Home() {
       setMessages((prev) => [...prev, { role: 'system', content: 'ERROR COMMUNICATING WITH SERVER.' }]);
     } finally {
       setLoading(false);
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
     }
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    submitMessage(input);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      submitMessage(input);
+    }
+  };
+  
+  const isInterviewStarted = messages.length > 1;
 
   return (
     <div className="min-h-screen p-4 md:p-8 flex flex-col items-center mx-auto w-full">
@@ -209,34 +237,49 @@ export default function Home() {
 
         {/* Input Area */}
         <footer className="mt-auto">
-          <form onSubmit={handleSubmit} className="relative flex items-center">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={loading || feedback !== null}
-              placeholder={feedback ? "Interview concluded." : "Type your answer..."}
-              className="w-full neo-input neo-border neo-shadow neo-interactive disabled:opacity-50 pr-40 pl-6 py-5 text-lg"
-            />
-            
-            <div className="absolute right-4 flex items-center gap-2">
+          {!isInterviewStarted && !feedback && !loading ? (
+            <div className="flex justify-center mb-4">
               <button 
-                type="button"
-                className="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 border-2 border-transparent rounded-lg transition-colors"
-                title="Voice Input (Mock)"
-                disabled={feedback !== null}
+                onClick={() => submitMessage("START")}
+                className="neo-button neo-border shadow-[8px_8px_0px_0px_#000] hover:shadow-[10px_10px_0px_0px_#000] hover:-translate-y-1 hover:-translate-x-1 active:translate-y-1 active:translate-x-1 transition-all text-xl px-12 py-5 bg-[var(--primary)] text-white w-full max-w-lg font-extrabold uppercase tracking-wide"
               >
-                🎤
-              </button>
-              <button 
-                type="submit"
-                disabled={loading || feedback !== null}
-                className="neo-button neo-border shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-1 active:translate-x-1 transition-all disabled:opacity-50 flex items-center gap-2 px-6 py-3"
-              >
-                Send ➜
+                Start Interview 🚀
               </button>
             </div>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="relative w-full flex items-end">
+              <textarea
+                ref={textareaRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={loading || feedback !== null}
+                placeholder={feedback ? "Interview concluded." : "Type your answer... (Shift+Enter for new line)"}
+                className="w-full neo-input neo-border neo-shadow neo-interactive disabled:opacity-50 pr-[200px] pl-6 py-5 text-lg resize-none overflow-y-auto min-h-[76px]"
+                rows={1}
+                style={{ maxHeight: '240px' }}
+              />
+              
+              <div className="absolute right-3 bottom-3 flex items-center gap-2">
+                <button 
+                  type="button"
+                  onClick={() => submitMessage("[END_INTERVIEW]")}
+                  title="Force End Interview"
+                  disabled={loading || feedback !== null}
+                  className="neo-button neo-border shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-1 active:translate-x-1 transition-all disabled:opacity-50 px-5 py-3 bg-[var(--error)] text-white"
+                >
+                  END
+                </button>
+                <button 
+                  type="submit"
+                  disabled={loading || feedback !== null || !input.trim()}
+                  className="neo-button neo-border shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-1 active:translate-x-1 transition-all disabled:opacity-50 px-6 py-3"
+                >
+                  Send ➜
+                </button>
+              </div>
+            </form>
+          )}
         </footer>
       </div>
     </div>
