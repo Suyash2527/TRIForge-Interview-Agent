@@ -8,6 +8,8 @@ const AiCore = dynamic(() => import('@/components/AiCore'), {
   loading: () => <div className="w-full h-full flex items-center justify-center text-[10px] animate-pulse">✨</div>
 });
 
+const BackgroundLiquid = dynamic(() => import('@/components/BackgroundLiquid'), { ssr: false });
+
 export default function Home() {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
     {
@@ -94,7 +96,8 @@ export default function Home() {
   const currentQuestion = Math.ceil(messages.length / 2);
 
   return (
-    <div className="h-screen w-full flex flex-col bg-[var(--bg-color)] overflow-hidden">
+    <div className="h-screen w-full flex flex-col bg-[var(--bg-color)] overflow-hidden relative">
+      <BackgroundLiquid />
       
       {/* Sleek Navigation Header */}
       <header className="h-14 border-b border-[var(--border-color)] flex items-center justify-between px-6 shrink-0 bg-[var(--bg-color)]/80 backdrop-blur-md z-10">

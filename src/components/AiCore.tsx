@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Icosahedron, MeshDistortMaterial } from '@react-three/drei';
+import { Sphere, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface AiCoreProps {
@@ -29,14 +29,16 @@ function CoreShape({ isGenerating = false }: AiCoreProps) {
   });
 
   return (
-    <Icosahedron ref={meshRef as any} args={[0.8, 4]}>
+    <Sphere ref={meshRef as any} args={[0.8, 64, 64]}>
       <MeshDistortMaterial
         color={isGenerating ? "#7C5CFC" : "#4F8CFF"}
-        wireframe={true}
-        distort={isGenerating ? 0.4 : 0.15}
-        speed={isGenerating ? 4 : 1.5}
+        wireframe={false}
+        roughness={0.2}
+        metalness={0.8}
+        distort={isGenerating ? 0.6 : 0.25}
+        speed={isGenerating ? 5 : 2}
       />
-    </Icosahedron>
+    </Sphere>
   );
 }
 
