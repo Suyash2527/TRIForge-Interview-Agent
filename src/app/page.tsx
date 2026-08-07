@@ -3,8 +3,11 @@
 import { useState, useRef, useEffect } from 'react';
 import AiCore from '@/components/AiCore';
 import BackgroundLiquid from '@/components/BackgroundLiquid';
+import SplashScreen from '@/components/SplashScreen';
+import AnimatedLogo from '@/components/AnimatedLogo';
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
     {
       role: 'agent',
@@ -90,20 +93,22 @@ export default function Home() {
   const currentQuestion = Math.ceil(messages.length / 2);
 
   return (
-    <div className="h-screen w-full flex flex-col bg-[var(--bg-color)] overflow-hidden relative">
-      <BackgroundLiquid />
-      
-      {/* Sleek Navigation Header */}
-      <header className="h-14 border-b border-[var(--border-color)] flex items-center justify-between px-6 shrink-0 bg-[var(--bg-color)]/80 backdrop-blur-md z-10">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center -ml-1">
-            <AiCore isGenerating={loading} />
+    <>
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <div className={`h-screen w-full flex flex-col bg-[var(--bg-color)] overflow-hidden relative transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
+        <BackgroundLiquid />
+        
+        {/* Sleek Navigation Header */}
+        <header className="h-14 border-b border-[var(--border-color)] flex items-center justify-between px-6 shrink-0 bg-[var(--bg-color)]/80 backdrop-blur-md z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 flex items-center justify-center -ml-1">
+              <AnimatedLogo className="w-full h-full" animated={false} />
+            </div>
+            <div className="flex flex-col">
+              <h1 className="text-sm font-semibold text-white leading-tight">AI Interviewer</h1>
+              <span className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider">Practice • Analyze • Improve</span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-sm font-semibold text-white leading-tight">AI Interviewer</h1>
-            <span className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider">Practice • Analyze • Improve</span>
-          </div>
-        </div>
         
         {/* Mock Global Stats */}
         <div className="hidden md:flex items-center gap-6 text-xs text-[var(--text-secondary)]">
@@ -372,5 +377,6 @@ export default function Home() {
         </main>
       </div>
     </div>
+    </>
   );
 }
