@@ -22,6 +22,8 @@
 
   body {
     background-color: var(--bg-color);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
     color: var(--text-color);
     font-family: var(--font-inter);
     line-height: 1.6;
