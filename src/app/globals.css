@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --accent: #ff00ff;
+    --accent-secondary: #00ff00;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Brutalist Utilities */
+  .brutal-border {
+    border: 3px solid #000;
+  }
+
+  .brutal-shadow {
+    box-shadow: 6px 6px 0px 0px #000;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  
+  .brutal-shadow:active {
+    transform: translate(3px, 3px);
+    box-shadow: 3px 3px 0px 0px #000;
+  }
+
+  .brutal-shadow-static {
+    box-shadow: 6px 6px 0px 0px #000;
+  }
+
+  .brutal-button {
+    background-color: var(--accent);
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 3px solid #000;
+    cursor: pointer;
+  }
+  
+  .brutal-button:hover {
+    background-color: #000;
+    color: var(--accent);
+  }
+}
