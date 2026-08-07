@@ -168,7 +168,7 @@ export default function Home() {
                     {m.role === 'agent' && (
                       <>
                         <div className="w-5 h-5 rounded flex items-center justify-center bg-[var(--surface-secondary)] border border-[var(--border-color)] text-xs">✨</div>
-                        <span className="text-xs font-medium text-[var(--text-secondary)]">Claude</span>
+                        <span className="text-xs font-medium text-[var(--text-secondary)]">AI Interviewer</span>
                       </>
                     )}
                     {m.role === 'candidate' && (
@@ -199,7 +199,7 @@ export default function Home() {
                 <div className="flex flex-col gap-1.5 items-start animate-slide-up">
                   <div className="flex items-center gap-2 px-1">
                     <div className="w-5 h-5 rounded flex items-center justify-center bg-[var(--surface-secondary)] border border-[var(--border-color)] text-xs">✨</div>
-                    <span className="text-xs font-medium text-[var(--text-secondary)]">Claude</span>
+                    <span className="text-xs font-medium text-[var(--text-secondary)]">AI Interviewer</span>
                   </div>
                   <div className="px-5 py-4 msg-agent premium-panel shadow-none rounded-2xl rounded-tl-sm flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 bg-[var(--text-secondary)] rounded-full typing-dot" />
