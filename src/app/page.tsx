@@ -11,11 +11,12 @@ export default function Home() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState<any>(null);
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, feedback]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +42,10 @@ export default function Home() {
       setMessages((prev) => [...prev, { role: 'agent', content: data.reply }]);
       
       if (data.done) {
-        setMessages((prev) => [...prev, { role: 'system', content: 'INTERVIEW CONCLUDED. FEEDBACK GENERATED.' }]);
-        console.log("Feedback:", data.feedback);
+        setMessages((prev) => [...prev, { role: 'system', content: 'INTERVIEW CONCLUDED. PROCESSING FEEDBACK...' }]);
+        if (data.feedback) {
+          setFeedback(data.feedback);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -122,7 +125,7 @@ export default function Home() {
                   >
                     {m.content}
                   </div>
-                  <span className={`text-xs font-semibold text-gray-400 mt-1 ${m.role === 'candidate' ? 'text-right' : 'text-left'}`}>
+                  <span suppressHydrationWarning className={`text-xs font-semibold text-gray-400 mt-1 ${m.role === 'candidate' ? 'text-right' : 'text-left'}`}>
                     {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                   </span>
                 </div>
@@ -144,6 +147,62 @@ export default function Home() {
                 </div>
               </div>
             )}
+            
+            {/* Feedback Report Rendering */}
+            {feedback && (
+              <div className="mt-8 mb-4 flex flex-col gap-4 self-center w-full max-w-4xl animate-[fade-in-up_0.5s_ease-out_forwards]">
+                <div className="text-center mb-2">
+                  <h2 className="text-3xl font-extrabold uppercase tracking-tight">Performance Report</h2>
+                </div>
+                
+                <div className="neo-border bg-[#F8FAFC] p-8 shadow-[8px_8px_0px_0px_#000] flex flex-col gap-6">
+                  
+                  {/* Grade Badge */}
+                  <div className="flex items-center justify-between border-b-2 border-black pb-4">
+                    <span className="text-xl font-bold uppercase">Final Grade</span>
+                    <span className={`text-2xl font-extrabold px-4 py-2 neo-border ${feedback.grade === 'PASS' ? 'bg-[var(--success)] text-white' : 'bg-[var(--error)] text-white'}`}>
+                      {feedback.grade}
+                    </span>
+                  </div>
+
+                  {/* Summary */}
+                  <div>
+                    <h3 className="text-lg font-bold mb-2 uppercase">Summary</h3>
+                    <p className="text-gray-800 text-[1.05rem] leading-relaxed bg-white p-4 neo-border">
+                      {feedback.summary}
+                    </p>
+                  </div>
+
+                  {/* Strengths & Weaknesses */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-bold mb-2 uppercase text-[var(--success)]">Strengths</h3>
+                      <ul className="bg-white p-4 neo-border flex flex-col gap-2 h-full">
+                        {feedback.strengths?.map((s: string, i: number) => (
+                          <li key={i} className="flex gap-2">
+                            <span className="text-[var(--success)] font-bold">✓</span>
+                            <span>{s}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2 uppercase text-[var(--error)]">Weaknesses</h3>
+                      <ul className="bg-white p-4 neo-border flex flex-col gap-2 h-full">
+                        {feedback.weaknesses?.map((w: string, i: number) => (
+                          <li key={i} className="flex gap-2">
+                            <span className="text-[var(--error)] font-bold">✕</span>
+                            <span>{w}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            )}
+            
             <div ref={endOfMessagesRef} />
           </div>
         </main>
@@ -155,8 +214,8 @@ export default function Home() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              disabled={loading}
-              placeholder="Type your answer..."
+              disabled={loading || feedback !== null}
+              placeholder={feedback ? "Interview concluded." : "Type your answer..."}
               className="w-full neo-input neo-border neo-shadow neo-interactive disabled:opacity-50 pr-40 pl-6 py-5 text-lg"
             />
             
@@ -165,12 +224,13 @@ export default function Home() {
                 type="button"
                 className="w-12 h-12 flex items-center justify-center bg-gray-100 hover:bg-gray-200 border-2 border-transparent rounded-lg transition-colors"
                 title="Voice Input (Mock)"
+                disabled={feedback !== null}
               >
                 🎤
               </button>
               <button 
                 type="submit"
-                disabled={loading}
+                disabled={loading || feedback !== null}
                 className="neo-button neo-border shadow-[4px_4px_0px_0px_#000] hover:shadow-[6px_6px_0px_0px_#000] hover:-translate-y-0.5 hover:-translate-x-0.5 active:translate-y-1 active:translate-x-1 transition-all disabled:opacity-50 flex items-center gap-2 px-6 py-3"
               >
                 Send ➜
