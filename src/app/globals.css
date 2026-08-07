@@ -21,11 +21,17 @@
 
   body {
     background-color: var(--bg-color);
+    background-image: 
+      radial-gradient(circle at 100% 0%, rgba(59,130,246,0.10) 0%, transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(139,92,246,0.10) 0%, transparent 50%);
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: var(--font-inter);
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    /* Soft entrance animation */
+    animation: fade-in-up 0.6s ease-out forwards;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -33,9 +39,24 @@
     color: var(--text-color);
   }
 
-  /* Neo Brutalist Utilities */
+  /* Custom Scrollbar for a premium feel */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #94A3B8;
+  }
+
+  /* Premium Neo Brutalist Utilities */
   .neo-border {
-    border: 4px solid var(--border-color);
+    border: 3px solid var(--border-color);
     border-radius: 16px;
   }
 
@@ -48,9 +69,10 @@
     box-shadow: 8px 8px 0px 0px var(--border-color);
   }
 
+  /* Hover and Pressed states for cards and buttons */
   .neo-interactive:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px 0px var(--border-color);
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0px 0px var(--border-color);
   }
   
   .neo-interactive:active {
@@ -62,35 +84,62 @@
     background-color: var(--primary);
     color: #fff;
     font-weight: 700;
-    padding: 12px 24px;
+    padding: 16px 32px;
     cursor: pointer;
   }
 
   .neo-input {
     background-color: var(--surface);
     color: var(--text-color);
-    padding: 16px;
+    padding: 20px;
     font-size: 1.125rem;
     outline: none;
     transition: box-shadow 200ms ease;
   }
   
   .neo-input:focus {
-    /* Primary blue focus ring on top of the black border */
-    box-shadow: 0 0 0 4px var(--primary);
+    box-shadow: 0 0 0 3px var(--primary);
   }
   
-  /* Message specific colors */
+  /* Message Bubbles */
   .msg-agent {
     background-color: var(--surface);
   }
   
   .msg-candidate {
-    background-color: var(--accent); /* Light cyan */
+    background-color: #DBEAFE; /* Light blue */
   }
   
   .msg-system {
-    background-color: var(--secondary); /* Violet */
+    background-color: var(--secondary);
     color: white;
   }
+
+  /* Animations */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-6px);
+    }
+  }
+
+  .typing-dot {
+    animation: bounce 1.4s infinite ease-in-out both;
+  }
+
+  .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+  .typing-dot:nth-child(2) { animation-delay: -0.16s; }
 }
