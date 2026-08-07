@@ -53,37 +53,42 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white p-4 md:p-8 flex flex-col font-mono max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[var(--bg-color)] p-6 md:p-12 flex flex-col max-w-6xl mx-auto">
       
-      <header className="mb-8 border-b-4 border-black pb-4">
-        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter">
-          [AI_INTERVIEWER]
-        </h1>
-        <p className="bg-black text-white inline-block px-2 mt-2 font-bold uppercase">
-          TRIForge Cohort Assessment Module v1.0
-        </p>
+      <header className="mb-12 flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tight text-[var(--primary)]" style={{textShadow: '3px 3px 0px #000'}}>
+            [AI_INTERVIEWER]
+          </h1>
+          <p className="mt-4 text-lg font-medium text-gray-700">
+            TRIForge Cohort Assessment Module v1.0
+          </p>
+        </div>
+        <div className="hidden md:block neo-border neo-shadow-static bg-[var(--success)] px-4 py-2 text-white font-bold uppercase">
+          System Online
+        </div>
       </header>
 
-      <main className="flex-1 flex flex-col brutal-border brutal-shadow-static bg-[#f0f0f0] p-4 md:p-8 mb-8 overflow-hidden h-[60vh]">
-        <div className="flex-1 overflow-y-auto flex flex-col gap-6 pr-4">
+      <main className="flex-1 flex flex-col neo-border neo-shadow-static bg-white p-6 md:p-10 mb-12 overflow-hidden h-[60vh]">
+        <div className="flex-1 overflow-y-auto flex flex-col gap-8 pr-4">
           {messages.map((m, idx) => (
             <div 
               key={idx} 
-              className={`max-w-[85%] ${m.role === 'candidate' ? 'self-end' : 'self-start'}`}
+              className={`max-w-[85%] md:max-w-[75%] ${m.role === 'candidate' ? 'self-end' : 'self-start'}`}
             >
-              <div className="text-xs font-bold uppercase mb-1 flex items-center gap-2">
-                {m.role === 'agent' && <span className="w-3 h-3 bg-black inline-block rounded-none" />}
-                {m.role === 'candidate' && <span className="w-3 h-3 bg-[#00ff00] brutal-border inline-block" />}
-                {m.role === 'system' && <span className="w-3 h-3 bg-[#ff00ff] inline-block brutal-border" />}
+              <div className="text-sm font-bold uppercase mb-2 flex items-center gap-2 tracking-wide">
+                {m.role === 'agent' && <span className="w-4 h-4 bg-[var(--primary)] neo-border inline-block rounded-full" />}
+                {m.role === 'candidate' && <span className="w-4 h-4 bg-[var(--accent)] neo-border inline-block rounded-full" />}
+                {m.role === 'system' && <span className="w-4 h-4 bg-[var(--secondary)] neo-border inline-block rounded-full" />}
                 {m.role}
               </div>
               <div 
-                className={`p-4 brutal-border text-lg ${
+                className={`p-6 neo-border neo-shadow-static text-lg md:text-xl leading-relaxed ${
                   m.role === 'candidate' 
-                    ? 'bg-[#00ff00] text-black brutal-shadow' 
+                    ? 'msg-candidate' 
                     : m.role === 'system'
-                    ? 'bg-[#ff00ff] text-white font-bold'
-                    : 'bg-white text-black brutal-shadow-static'
+                    ? 'msg-system'
+                    : 'msg-agent'
                 }`}
               >
                 {m.content}
@@ -91,10 +96,13 @@ export default function Home() {
             </div>
           ))}
           {loading && (
-            <div className="self-start max-w-[85%]">
-              <div className="text-xs font-bold uppercase mb-1">agent</div>
-              <div className="p-4 brutal-border bg-white text-black text-lg animate-pulse">
-                PROCESSING...
+            <div className="self-start max-w-[85%] md:max-w-[75%]">
+              <div className="text-sm font-bold uppercase mb-2 flex items-center gap-2 tracking-wide">
+                <span className="w-4 h-4 bg-[var(--primary)] neo-border inline-block rounded-full" />
+                agent
+              </div>
+              <div className="p-6 neo-border neo-shadow-static msg-agent text-lg md:text-xl animate-pulse">
+                Processing input...
               </div>
             </div>
           )}
@@ -103,19 +111,19 @@ export default function Home() {
       </main>
 
       <footer className="mt-auto">
-        <form onSubmit={handleSubmit} className="flex gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-6">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={loading}
-            placeholder="TYPE YOUR RESPONSE..."
-            className="flex-1 p-4 brutal-border brutal-shadow text-xl uppercase placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-[#ff00ff]"
+            placeholder="Type your response here..."
+            className="flex-1 neo-input neo-border neo-shadow neo-interactive disabled:opacity-50"
           />
           <button 
             type="submit"
             disabled={loading}
-            className="brutal-button brutal-shadow text-xl px-8 disabled:opacity-50"
+            className="neo-button neo-border neo-shadow neo-interactive text-xl px-12 py-4 disabled:opacity-50"
           >
             SEND
           </button>

@@ -1,57 +1,96 @@
 @import "tailwindcss";
 
 @theme {
-  --font-mono: 'Courier New', Courier, monospace;
+  --font-inter: var(--font-inter), sans-serif;
+  --font-space-grotesk: var(--font-space-grotesk), sans-serif;
 }
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #000000;
-    --accent: #ff00ff;
-    --accent-secondary: #00ff00;
+    --bg-color: #F8FAFC;
+    --surface: #FFFFFF;
+    --primary: #3B82F6;
+    --secondary: #8B5CF6;
+    --accent: #22D3EE;
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --error: #EF4444;
+    --text-color: #111827;
+    --border-color: #000000;
   }
 
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: var(--font-mono);
-    line-height: 1.5;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-inter);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
   }
 
-  /* Brutalist Utilities */
-  .brutal-border {
-    border: 3px solid #000;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-space-grotesk);
+    color: var(--text-color);
   }
 
-  .brutal-shadow {
-    box-shadow: 6px 6px 0px 0px #000;
-    transition: transform 0.1s, box-shadow 0.1s;
+  /* Neo Brutalist Utilities */
+  .neo-border {
+    border: 4px solid var(--border-color);
+    border-radius: 16px;
+  }
+
+  .neo-shadow {
+    box-shadow: 8px 8px 0px 0px var(--border-color);
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .neo-shadow-static {
+    box-shadow: 8px 8px 0px 0px var(--border-color);
+  }
+
+  .neo-interactive:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px 0px var(--border-color);
   }
   
-  .brutal-shadow:active {
-    transform: translate(3px, 3px);
-    box-shadow: 3px 3px 0px 0px #000;
+  .neo-interactive:active {
+    transform: translate(2px, 2px);
+    box-shadow: 6px 6px 0px 0px var(--border-color);
   }
 
-  .brutal-shadow-static {
-    box-shadow: 6px 6px 0px 0px #000;
-  }
-
-  .brutal-button {
-    background-color: var(--accent);
+  .neo-button {
+    background-color: var(--primary);
     color: #fff;
-    text-transform: uppercase;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: 3px solid #000;
+    font-weight: 700;
+    padding: 12px 24px;
     cursor: pointer;
   }
+
+  .neo-input {
+    background-color: var(--surface);
+    color: var(--text-color);
+    padding: 16px;
+    font-size: 1.125rem;
+    outline: none;
+    transition: box-shadow 200ms ease;
+  }
   
-  .brutal-button:hover {
-    background-color: #000;
-    color: var(--accent);
+  .neo-input:focus {
+    /* Primary blue focus ring on top of the black border */
+    box-shadow: 0 0 0 4px var(--primary);
+  }
+  
+  /* Message specific colors */
+  .msg-agent {
+    background-color: var(--surface);
+  }
+  
+  .msg-candidate {
+    background-color: var(--accent); /* Light cyan */
+  }
+  
+  .msg-system {
+    background-color: var(--secondary); /* Violet */
+    color: white;
   }
 }
