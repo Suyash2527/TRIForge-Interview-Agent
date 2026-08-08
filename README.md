@@ -1,5 +1,7 @@
 # TRIForge AI Interview Agent
 
+![Build Status](https://github.com/Suyash2527/TRIForge-Interview-Agent/actions/workflows/test.yml/badge.svg)
+
 An enterprise-grade, real-time AI Interviewing platform built to dynamically assess technical candidates. The application leverages the Google Gemini API to conduct conversational interviews, evaluate candidate responses against specific curricula, and provide a live, dynamically adjusting score.
 
 ## 🚀 Features
