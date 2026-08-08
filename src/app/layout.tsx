@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Inter_Tight } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,23 +7,24 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const interTight = Inter_Tight({
-  variable: "--font-heading",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
-  title: "AI Interviewer",
-  description: "Premium Assessment Platform",
+  title: "AI Interviewer — Practice. Improve. Succeed.",
+  description: "AI-powered interview practice platform. Sharpen your engineering skills with realistic mock interviews and instant feedback.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${interTight.variable} h-full antialiased`}
+      className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0F1117] text-white">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#161514] text-[#F0EBE3]">{children}</body>
     </html>
   );
 }

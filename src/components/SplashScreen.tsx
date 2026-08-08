@@ -8,9 +8,7 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
   const [removed, setRemoved] = useState(false);
 
   useEffect(() => {
-    // Wait for the full 5-step animation (approx 2.5s) plus some reading time
     const timer1 = setTimeout(() => setFading(true), 3500);
-    // Fully remove from DOM after fade transition
     const timer2 = setTimeout(() => {
       setRemoved(true);
       onComplete();
@@ -25,9 +23,9 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
   if (removed) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#0F1117] transition-opacity duration-700 ease-in-out ${fading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#161514] transition-opacity duration-700 ease-in-out ${fading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
       <div className="flex flex-col items-center gap-8">
-        <AnimatedLogo className="w-56 h-56" animated={true} />
+        <AnimatedLogo className="w-48 h-48" animated={true} />
         
         <div className="flex flex-col items-center gap-2 mt-4 relative">
           <style>{`
@@ -41,10 +39,10 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
             }
           `}</style>
           
-          <h1 className="text-4xl font-bold tracking-tight text-white fade-up-text" style={{ animationDelay: '2.2s' }}>
-            <span className="text-[#4F8CFF]">AI</span> INTERVIEWER
+          <h1 className="text-3xl font-normal tracking-tight text-[#F0EBE3] fade-up-text" style={{ animationDelay: '2.2s', fontFamily: 'var(--font-display)' }}>
+            <span className="text-[#D4943A]">AI</span> Interviewer
           </h1>
-          <span className="text-xs text-[#9CA3AF] uppercase tracking-[0.4em] font-semibold fade-up-text" style={{ animationDelay: '2.6s' }}>
+          <span className="text-[11px] text-[#7A7268] uppercase tracking-[0.3em] font-medium fade-up-text" style={{ animationDelay: '2.6s' }}>
             Practice. Improve. Succeed.
           </span>
         </div>
