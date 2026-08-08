@@ -38,6 +38,12 @@ const Icon = {
 };
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [showSplash, setShowSplash] = useState(true);
   const [sessionId] = useState<number>(() => Date.now());
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
@@ -154,7 +160,7 @@ export default function Home() {
               className="font-mono text-[10px] text-[var(--text-tertiary)]"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
-              #{String(sessionId).slice(-6)}
+              #{mounted ? String(sessionId).slice(-6) : '------'}
             </span>
           </div>
         </header>
