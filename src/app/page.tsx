@@ -5,10 +5,11 @@ import SplashScreen from '@/components/SplashScreen';
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
+  const [sessionId, setSessionId] = useState<number>(() => Date.now());
   const [messages, setMessages] = useState<{ role: string; content: string }[]>([
     {
       role: 'agent',
-      content: 'Hello! Welcome to your interview.\n\nRole:\nFrontend Developer\n\nDifficulty:\nMedium\n\nEstimated Time:\n20 Minutes\n\nPress Start Interview to begin.',
+      content: 'Hello! Welcome to your interview.\n\nRole:\nAI Engineering Candidate\n\nDifficulty:\nAdaptive\n\nEstimated Time:\n20 Minutes\n\nPress Begin Interview to start.',
     }
   ]);
   const [input, setInput] = useState('');
@@ -44,7 +45,7 @@ export default function Home() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage.content, history: messages }),
+        body: JSON.stringify({ message: userMessage.content, history: messages, sessionSeed: sessionId }),
       });
 
       if (!response.ok) {
