@@ -13,6 +13,8 @@ export default function AnimatedLogo({ className = "w-32 h-32", animated = true 
             stroke-dasharray: 400;
             stroke-dashoffset: 400;
             animation: draw 1s ease-in-out forwards;
+            will-change: stroke-dashoffset, fill, opacity;
+            transform: translateZ(0);
           }
           .svg-logo .delay-1 { animation-delay: 0.8s; }
           .svg-logo .delay-2 { animation-delay: 1.4s; }
@@ -21,6 +23,7 @@ export default function AnimatedLogo({ className = "w-32 h-32", animated = true 
             stroke: none;
             animation: glow 0.5s ease-in forwards;
             animation-delay: 2s;
+            will-change: fill;
           }
           .svg-logo .final-fill {
             animation: fill-color 1s ease-in forwards;
@@ -31,7 +34,7 @@ export default function AnimatedLogo({ className = "w-32 h-32", animated = true 
             to { stroke-dashoffset: 0; }
           }
           @keyframes glow {
-            to { fill: #4F8CFF; filter: drop-shadow(0 0 8px #4F8CFF); }
+            to { fill: #4F8CFF; } /* Removed expensive drop-shadow filter */
           }
           @keyframes fill-color {
             to { fill-opacity: 1; stroke-opacity: 0.1; }
@@ -48,7 +51,7 @@ export default function AnimatedLogo({ className = "w-32 h-32", animated = true 
 
       <svg 
         viewBox="0 0 100 100" 
-        className={`w-full h-full drop-shadow-2xl ${animated ? 'svg-logo' : 'svg-static'}`}
+        className={`w-full h-full ${animated ? 'svg-logo' : 'svg-static'}`}
       >
         <defs>
           <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
