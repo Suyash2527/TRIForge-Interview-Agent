@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import AiCore from '@/components/AiCore';
-import BackgroundLiquid from '@/components/BackgroundLiquid';
 import SplashScreen from '@/components/SplashScreen';
 import AnimatedLogo from '@/components/AnimatedLogo';
 
@@ -96,7 +95,6 @@ export default function Home() {
     <>
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       <div className={`h-screen w-full flex flex-col bg-[var(--bg-color)] overflow-hidden relative transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
-        <BackgroundLiquid />
         
         {/* Sleek Navigation Header */}
         <header className="h-14 border-b border-[var(--border-color)] flex items-center justify-between px-6 shrink-0 bg-[var(--bg-color)]/80 backdrop-blur-md z-10">
