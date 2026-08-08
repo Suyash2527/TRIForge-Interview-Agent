@@ -84,9 +84,36 @@ export default function Home() {
   };
   
   const isInterviewStarted = messages.length > 1;
-  const progressPercent = Math.min((messages.length / 10) * 100, 100);
-  const currentQuestion = Math.ceil(messages.length / 2);
+  const currentQuestion = Math.min(Math.ceil(messages.length / 2), 10);
   const totalQuestions = 10;
+
+  // Calculate dynamic score based on feedback or active interview progression
+  const dynamicScore = feedback?.scores
+    ? Math.round(
+        (feedback.scores.technicalDepth +
+          feedback.scores.communication +
+          feedback.scores.problemSolving +
+          feedback.scores.systemDesign) / 4
+      )
+    : isInterviewStarted
+    ? Math.min(70 + Math.floor(messages.length * 2.2), 94)
+    : null;
+
+  // Dynamic topic tracking based on current question number
+  const getTopicState = (topicIndex: number) => {
+    if (!isInterviewStarted) return 'upcoming';
+    const qNum = currentQuestion;
+    if (qNum > (topicIndex + 1) * 2.5) return 'completed';
+    if (qNum > topicIndex * 2.5) return 'active';
+    return 'upcoming';
+  };
+
+  const topics = [
+    { name: 'Embeddings', state: getTopicState(0) },
+    { name: 'Vector Databases', state: getTopicState(1) },
+    { name: 'Agentic Frameworks', state: getTopicState(2) },
+    { name: 'Prompt Engineering', state: getTopicState(3) },
+  ];
 
   return (
     <>
@@ -119,7 +146,7 @@ export default function Home() {
               <div className="panel-inner p-4 flex flex-col gap-3">
                 <div className="flex justify-between items-baseline text-[13px]">
                   <span className="text-[var(--text-secondary)]">Question</span>
-                  <span className="font-medium text-[var(--text)]">{currentQuestion} / {totalQuestions}</span>
+                  <span className="font-medium text-[var(--text)]">{isInterviewStarted ? `${currentQuestion} / ${totalQuestions}` : `0 / ${totalQuestions}`}</span>
                 </div>
                 
                 {/* Segmented Progress */}
@@ -127,17 +154,21 @@ export default function Home() {
                   {Array.from({ length: totalQuestions }).map((_, i) => (
                     <div 
                       key={i} 
-                      className={`progress-segment ${i < currentQuestion - 1 ? 'completed' : i === currentQuestion - 1 ? 'active' : ''}`}
+                      className={`progress-segment ${isInterviewStarted && i < currentQuestion - 1 ? 'completed' : isInterviewStarted && i === currentQuestion - 1 ? 'active' : ''}`}
                     />
                   ))}
                 </div>
                 
                 <div className="flex justify-between items-center text-[13px] mt-1">
                   <span className="text-[var(--text-secondary)]">Score</span>
-                  <span className="score-badge">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                    92%
-                  </span>
+                  {dynamicScore !== null ? (
+                    <span className="score-badge">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                      {dynamicScore}%
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-[var(--text-tertiary)] font-mono">--</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -146,12 +177,7 @@ export default function Home() {
             <div>
               <h2 className="text-[11px] font-semibold text-[var(--text-secondary)] uppercase tracking-[0.08em] mb-4">Topics Covered</h2>
               <ul className="flex flex-col gap-2.5">
-                {[
-                  { name: 'Embeddings', state: 'completed' },
-                  { name: 'Agentic Frameworks', state: 'active' },
-                  { name: 'Vector Databases', state: 'upcoming' },
-                  { name: 'Prompt Engineering', state: 'upcoming' },
-                ].map((topic, i) => (
+                {topics.map((topic, i) => (
                   <li 
                     key={i} 
                     className={`flex items-center gap-2.5 text-[13px] rounded-lg px-2.5 py-1.5 transition-colors ${
