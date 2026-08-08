@@ -2,6 +2,16 @@ import { GoogleGenAI } from '@google/genai';
 import { NextResponse } from 'next/server';
 import { generateSystemPrompt } from '@/lib/agent/prompt';
 import { Curriculum, Candidate } from '@/lib/models/types';
+import { z } from 'zod';
+
+const chatRequestSchema = z.object({
+  message: z.string().max(2000, "Message is too long"),
+  history: z.array(z.object({
+    role: z.enum(['agent', 'candidate', 'system']),
+    content: z.string()
+  })).max(100, "History is too long"),
+  sessionSeed: z.union([z.string(), z.number()]).optional()
+});
 
 // Candidate & Curriculum Pool for diverse, dynamic session generation
 const CANDIDATE_POOL: { candidate: Candidate; curriculum: Curriculum }[] = [
@@ -72,7 +82,14 @@ const CANDIDATE_POOL: { candidate: Candidate; curriculum: Curriculum }[] = [
 
 export async function POST(req: Request) {
   try {
-    const { message, history, sessionSeed } = await req.json();
+    const jsonBody = await req.json();
+    const parseResult = chatRequestSchema.safeParse(jsonBody);
+
+    if (!parseResult.success) {
+      return NextResponse.json({ reply: 'SYSTEM ERROR: Invalid request payload.' }, { status: 400 });
+    }
+
+    const { message, history, sessionSeed } = parseResult.data;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
