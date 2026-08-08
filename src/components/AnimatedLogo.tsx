@@ -1,125 +1,156 @@
 'use client';
 
-export default function AnimatedLogo({ className = "w-32 h-32", animated = true }: { className?: string, animated?: boolean }) {
+export default function AnimatedLogo({
+  className = "w-32 h-32",
+  animated = true,
+}: {
+  className?: string;
+  animated?: boolean;
+}) {
   return (
     <div className={`relative ${className}`}>
       {animated && (
         <style>{`
-          .svg-logo path, .svg-logo rect, .svg-logo circle {
+          .svg-logo path, .svg-logo rect, .svg-logo circle, .svg-logo polygon {
             fill: transparent;
-            stroke-width: 4;
+            stroke-width: 3;
             stroke-linecap: round;
             stroke-linejoin: round;
-            stroke-dasharray: 400;
-            stroke-dashoffset: 400;
-            animation: draw 1s ease-in-out forwards;
-            will-change: stroke-dashoffset, fill, opacity;
-            transform: translateZ(0);
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
+            animation: draw-path 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            will-change: stroke-dashoffset;
           }
-          .svg-logo .delay-1 { animation-delay: 0.8s; }
-          .svg-logo .delay-2 { animation-delay: 1.4s; }
+          .svg-logo .d1  { animation-delay: 0.0s; }
+          .svg-logo .d2  { animation-delay: 0.5s; }
+          .svg-logo .d3  { animation-delay: 0.9s; }
+          .svg-logo .d4  { animation-delay: 1.3s; }
           .svg-logo .eyes {
             fill: transparent;
             stroke: none;
-            animation: glow 0.5s ease-in forwards;
-            animation-delay: 2s;
-            will-change: fill;
+            animation: eye-glow 0.4s ease-out forwards;
+            animation-delay: 1.9s;
           }
-          .svg-logo .final-fill {
-            animation: fill-color 1s ease-in forwards;
-            animation-delay: 2.5s;
+          .svg-logo .glow-ring {
+            fill: transparent;
+            stroke: rgba(124, 109, 250, 0.15);
+            stroke-width: 1;
+            animation: ring-expand 1.2s ease-out forwards;
+            animation-delay: 2.0s;
+            transform-origin: 50px 50px;
           }
-          
-          @keyframes draw {
+
+          @keyframes draw-path {
             to { stroke-dashoffset: 0; }
           }
-          @keyframes glow {
-            to { fill: #D4943A; }
+          @keyframes eye-glow {
+            to { fill: #7c6dfa; }
           }
-          @keyframes fill-color {
-            to { fill-opacity: 1; stroke-opacity: 0.1; }
-          }
-          
-          .svg-static path, .svg-static rect, .svg-static circle {
-            stroke-width: 6;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+          @keyframes ring-expand {
+            from { r: 0; opacity: 0.8; }
+            to   { r: 48; opacity: 0; }
           }
         `}</style>
       )}
 
-      <svg 
-        viewBox="0 0 100 100" 
-        className={`w-full h-full ${animated ? 'svg-logo' : 'svg-static'}`}
-      >
+      <svg viewBox="0 0 100 100" className={`w-full h-full ${animated ? 'svg-logo' : 'svg-static'}`}>
         <defs>
-          <linearGradient id="amberGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#E2A84E" />
-            <stop offset="100%" stopColor="#D4943A" />
+          <linearGradient id="violetGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#9589fb" />
+            <stop offset="100%" stopColor="#7c6dfa" />
           </linearGradient>
-          <linearGradient id="warmGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F0EBE3" />
-            <stop offset="100%" stopColor="#7A7268" />
+          <linearGradient id="slateGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#e8eaf0" />
+            <stop offset="100%" stopColor="#6b7280" />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="1.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
 
-        {/* Bubble Left */}
-        <path 
-          d="M 50 15 C 20 15 10 25 10 45 C 10 65 20 75 40 75 L 40 90 L 50 80" 
-          stroke={animated ? "#7A7268" : "url(#warmGrad)"} 
-          className={animated ? "final-fill" : ""} 
-          style={!animated ? { fill: "transparent", strokeWidth: 6 } : {}}
+        {/* Expanding glow ring (animated only) */}
+        {animated && <circle className="glow-ring" cx="50" cy="50" r="0" />}
+
+        {/* Chat bubble — left */}
+        <path
+          className={animated ? 'd1' : ''}
+          d="M 15 40 C 15 22 25 14 50 14 C 50 14 50 14 50 14"
+          stroke={animated ? '#6b7280' : 'url(#slateGrad)'}
+          fill="none"
+        />
+        <path
+          className={animated ? 'd1' : ''}
+          d="M 50 14 C 75 14 85 22 85 40 C 85 58 75 66 50 66"
+          stroke={animated ? '#7c6dfa' : 'url(#violetGrad)'}
+          fill="none"
+        />
+        <path
+          className={animated ? 'd2' : ''}
+          d="M 50 66 C 25 66 15 58 15 40"
+          stroke={animated ? '#6b7280' : 'url(#slateGrad)'}
+          fill="none"
+        />
+        {/* Tail */}
+        <path
+          className={animated ? 'd2' : ''}
+          d="M 35 66 L 28 80 L 46 70"
+          stroke={animated ? '#7c6dfa' : 'url(#violetGrad)'}
+          fill="none"
+          strokeLinejoin="round"
         />
 
-        {/* Bubble Right */}
-        <path 
-          d="M 50 15 C 80 15 90 25 90 45 C 90 65 80 75 50 75" 
-          stroke={animated ? "#D4943A" : "url(#amberGrad)"} 
-          className={animated ? "final-fill" : ""}
-          style={!animated ? { fill: "transparent", strokeWidth: 6 } : {}}
-        />
-
-        {/* Robot Head */}
-        <rect 
-          x="30" y="30" width="40" height="35" rx="12" 
-          stroke="#4A453F" 
-          fill={animated ? "transparent" : "#1E1C1A"} 
-          className={animated ? "delay-1 final-fill" : ""} 
-          style={!animated ? { fill: "#1E1C1A", strokeWidth: 0 } : {}}
-        />
-
-        {/* Headset Band */}
-        <path 
-          d="M 24 50 C 24 20 76 20 76 50" 
-          stroke={animated ? "#F0EBE3" : "url(#warmGrad)"} 
-          fill="none" 
-          className={animated ? "delay-2" : ""}
-          style={!animated ? { strokeWidth: 5 } : {}}
+        {/* Headset band */}
+        <path
+          className={animated ? 'd3' : ''}
+          d="M 22 48 C 22 18 78 18 78 48"
+          stroke={animated ? '#e8eaf0' : 'url(#slateGrad)'}
+          fill="none"
         />
 
         {/* Earcups */}
-        <rect x="18" y="40" width="8" height="20" rx="4" stroke="#D4943A" fill={animated ? "transparent" : "url(#amberGrad)"} className={animated ? "delay-2 final-fill" : ""} style={!animated ? { strokeWidth: 0 } : {}} />
-        <rect x="74" y="40" width="8" height="20" rx="4" stroke="#D4943A" fill={animated ? "transparent" : "url(#amberGrad)"} className={animated ? "delay-2 final-fill" : ""} style={!animated ? { strokeWidth: 0 } : {}} />
-
-        {/* Microphone */}
-        <path 
-          d="M 76 55 C 76 70 65 72 58 72" 
-          stroke={animated ? "#F0EBE3" : "url(#warmGrad)"} 
-          fill="none" 
-          className={animated ? "delay-2" : ""}
+        <rect
+          className={animated ? 'd3' : ''}
+          x="15" y="40" width="9" height="18" rx="4.5"
+          stroke={animated ? '#7c6dfa' : 'url(#violetGrad)'}
+          fill={animated ? 'transparent' : 'url(#violetGrad)'}
         />
-        <circle cx="55" cy="72" r="4" stroke="#4A453F" fill={animated ? "transparent" : "#4A453F"} className={animated ? "delay-2 final-fill" : ""} style={!animated ? { strokeWidth: 0 } : {}} />
+        <rect
+          className={animated ? 'd3' : ''}
+          x="76" y="40" width="9" height="18" rx="4.5"
+          stroke={animated ? '#7c6dfa' : 'url(#violetGrad)'}
+          fill={animated ? 'transparent' : 'url(#violetGrad)'}
+        />
+
+        {/* Mic arm */}
+        <path
+          className={animated ? 'd4' : ''}
+          d="M 79 54 Q 79 68 68 70"
+          stroke={animated ? '#e8eaf0' : 'url(#slateGrad)'}
+          fill="none"
+        />
+        <circle
+          className={animated ? 'd4' : ''}
+          cx="64" cy="70" r="3.5"
+          stroke={animated ? '#7c6dfa' : 'url(#violetGrad)'}
+          fill={animated ? 'transparent' : '#7c6dfa'}
+        />
 
         {/* Eyes */}
-        <rect 
-          x="40" y="42" width="6" height="12" rx="3" 
-          fill={animated ? "transparent" : "#D4943A"} 
-          className={animated ? "eyes" : ""} 
+        <rect
+          className={animated ? 'eyes' : ''}
+          x="38" y="34" width="7" height="11" rx="3.5"
+          fill={animated ? 'transparent' : '#7c6dfa'}
+          filter={!animated ? 'url(#glow)' : undefined}
         />
-        <rect 
-          x="54" y="42" width="6" height="12" rx="3" 
-          fill={animated ? "transparent" : "#D4943A"} 
-          className={animated ? "eyes" : ""} 
+        <rect
+          className={animated ? 'eyes' : ''}
+          x="55" y="34" width="7" height="11" rx="3.5"
+          fill={animated ? 'transparent' : '#7c6dfa'}
+          filter={!animated ? 'url(#glow)' : undefined}
         />
       </svg>
     </div>
