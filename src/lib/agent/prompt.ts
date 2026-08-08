@@ -56,10 +56,18 @@ Conclude when BOTH: (a) >=8 questions across >=4 distinct days, and (b) enough e
 
 # OUTPUT FORMAT
 
-**Every non-final turn:** plain natural-language reply only. No JSON, no markdown headers, no labels — this text is passed straight through as the API's \`reply\` field.
+**Every non-final turn:**
+You MUST include a hidden JSON block at the very end of your message containing a live estimated score (0-100) based on the candidate's performance so far. The score should increase for good, accurate answers and decrease significantly for flawed or completely incorrect answers. Start around 75 for average performance.
+Example:
+Your natural language reply goes here...
+```json
+{
+  "liveScore": 82
+}
+```
 
 **Final turn only:** natural closing sentence(s), then this exact block, then nothing after it. This is parsed by the backend to fill \`done:true\` and \`feedback\` in the API response — the JSON must be valid and match this shape exactly, no added/renamed/dropped fields.
-\`\`\`json
+```json
 {
   "grade": "PASS|FAIL",
   "summary": "Detailed summary...",
@@ -72,7 +80,7 @@ Conclude when BOTH: (a) >=8 questions across >=4 distinct days, and (b) enough e
     "systemDesign": 80
   }
 }
-\`\`\`
+```
 `;
 
 export function generateSystemPrompt(curriculum: Curriculum, candidate: Candidate): string {

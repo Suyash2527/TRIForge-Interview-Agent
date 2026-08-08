@@ -108,26 +108,34 @@ export async function POST(req: Request) {
 
     const replyText = response.text || '';
     
-    // Check if the reply contains the final JSON feedback block
+    // Check if the reply contains the final JSON feedback block or a liveScore block
     let feedback = null;
+    let liveScore = null;
     let isDone = false;
     let cleanReply = replyText;
 
     const jsonMatch = replyText.match(/```json\n([\s\S]*?)\n```/);
     if (jsonMatch) {
-      isDone = true;
       try {
-        feedback = JSON.parse(jsonMatch[1]);
+        const parsed = JSON.parse(jsonMatch[1]);
         cleanReply = replyText.replace(/```json\n[\s\S]*?\n```/, '').trim();
+        
+        if (parsed.grade) {
+          isDone = true;
+          feedback = parsed;
+        } else if (parsed.liveScore !== undefined) {
+          liveScore = parsed.liveScore;
+        }
       } catch (e) {
-        console.error("Failed to parse final JSON feedback", e);
+        console.error("Failed to parse JSON feedback", e);
       }
     }
 
     return NextResponse.json({ 
       reply: cleanReply, 
       done: isDone,
-      feedback: feedback
+      feedback: feedback,
+      liveScore: liveScore
     });
 
   } catch (error: any) {

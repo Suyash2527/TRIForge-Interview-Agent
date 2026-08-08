@@ -56,6 +56,7 @@ export default function Home() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<any>(null);
+  const [liveScore, setLiveScore] = useState<number | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -85,6 +86,11 @@ export default function Home() {
       if (!res.ok) throw new Error('API Error');
       const data = await res.json();
       setMessages((p) => [...p, { role: 'agent', content: data.reply }]);
+      
+      if (data.liveScore !== undefined && data.liveScore !== null) {
+        setLiveScore(data.liveScore);
+      }
+      
       if (data.done) {
         setMessages((p) => [...p, { role: 'system', content: 'Interview concluded — generating report…' }]);
         if (data.feedback) setFeedback(data.feedback);
@@ -112,8 +118,10 @@ export default function Home() {
           feedback.scores.problemSolving +
           feedback.scores.systemDesign) / 4
       )
+    : liveScore !== null
+    ? liveScore
     : isStarted
-    ? Math.min(70 + Math.floor(messages.length * 2.2), 94)
+    ? 75
     : null;
 
   const topicState = (i: number) => {
