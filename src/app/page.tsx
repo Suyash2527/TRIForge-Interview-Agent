@@ -79,7 +79,6 @@ export default function Home() {
   const speakText = (text: string) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      // Remove markdown characters for cleaner speech
       const cleanText = text.replace(/[*_#`]/g, '');
       const utterance = new SpeechSynthesisUtterance(cleanText);
       window.speechSynthesis.speak(utterance);
@@ -105,7 +104,6 @@ export default function Home() {
   const submit = async (text: string) => {
     if (!text.trim() || loading || feedback !== null) return;
     
-    // Stop listening on submit if active
     if (isListening) {
       recognitionRef.current?.stop();
       setIsListening(false);
@@ -183,7 +181,7 @@ export default function Home() {
       {
         role: 'agent',
         content:
-          'Welcome to your AI engineering interview.\n\nRole: AI Systems Engineer\nDifficulty: Adaptive\nEstimated Time: 20 minutes\n\nPress Begin Interview when you\'re ready.',
+          'Welcome to your AI engineering interview.\n\n**Role:** AI Systems Engineer\n**Difficulty:** Adaptive\n**Estimated Time:** 20 minutes\n\nPress *Begin Interview* when you\'re ready.',
       },
     ]);
     setInput('');
@@ -214,7 +212,7 @@ export default function Home() {
             </div>
             <div className="h-6 w-px bg-outline-variant hidden md:block"></div>
             <span className="text-[14px] text-primary font-bold hidden md:block">
-              {dynamicScore !== null ? \`\${dynamicScore}% Score\` : '--'}
+              {dynamicScore !== null ? `${dynamicScore}% Score` : '--'}
             </span>
           </div>
         </nav>
@@ -271,8 +269,8 @@ export default function Home() {
               <ul className="flex flex-col">
                 {topics.map((t, i) => (
                   <li key={i}>
-                    <div className={\`flex items-center gap-md px-md py-sm \${t.state === 'active' ? 'bg-[var(--color-surface-container-high)] font-semibold' : 'text-[var(--color-on-surface-variant)]'} transition-all\`}>
-                      <span className={\`material-symbols-outlined \${t.state === 'completed' ? 'text-[var(--color-secondary)]' : ''}\`} style={{ fontVariationSettings: t.state === 'completed' ? "'FILL' 1" : undefined }}>
+                    <div className={`flex items-center gap-md px-md py-sm ${t.state === 'active' ? 'bg-[var(--color-surface-container-high)] font-semibold' : 'text-[var(--color-on-surface-variant)]'} transition-all`}>
+                      <span className={`material-symbols-outlined ${t.state === 'completed' ? 'text-[var(--color-secondary)]' : ''}`} style={{ fontVariationSettings: t.state === 'completed' ? "'FILL' 1" : undefined }}>
                         pie_chart
                       </span>
                       <span className="text-[12px]">Topic: {t.name}</span>
@@ -356,7 +354,7 @@ export default function Home() {
                         <div>
                            <div className="mb-md">
                              <span className="text-[14px] font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)]">Final Grade</span>
-                             <div className={\`mt-xs font-bold text-[32px] \${feedback.grade === 'PASS' ? 'text-[var(--color-secondary)]' : 'text-[var(--color-error)]'}\`}>{feedback.grade}</div>
+                             <div className={`mt-xs font-bold text-[32px] ${feedback.grade === 'PASS' ? 'text-[var(--color-secondary)]' : 'text-[var(--color-error)]'}`}>{feedback.grade}</div>
                            </div>
                            <div className="mb-md">
                              <span className="text-[14px] font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)]">Summary</span>
@@ -440,7 +438,7 @@ export default function Home() {
                         <button
                           onClick={toggleListening}
                           disabled={loading}
-                          className={\`absolute right-3 bottom-3 p-2 rounded-full transition-colors \${isListening ? 'text-[var(--color-error)] bg-[var(--color-error-container)] animate-pulse' : 'text-[var(--color-outline-variant)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-container-high)]'}\`}
+                          className={`absolute right-3 bottom-3 p-2 rounded-full transition-colors ${isListening ? 'text-[var(--color-error)] bg-[var(--color-error-container)] animate-pulse' : 'text-[var(--color-outline-variant)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-container-high)]'}`}
                           title={isListening ? "Stop listening" : "Start speaking"}
                         >
                           {isListening ? <Mic size={20} /> : <MicOff size={20} />}
