@@ -85,3 +85,23 @@ if (typeof global.Response === 'undefined') {
     }
   } as any;
 }
+
+// Mock libraries that are ESM or incompatible with JSDOM
+jest.mock('react-markdown', () => (props: any) => props.children);
+jest.mock('remark-gfm', () => () => {});
+jest.mock('recharts', () => ({
+  ResponsiveContainer: (props: any) => props.children,
+  RadarChart: (props: any) => props.children,
+  PolarGrid: () => null,
+  PolarAngleAxis: () => null,
+  PolarRadiusAxis: () => null,
+  Radar: () => null,
+}));
+jest.mock('lucide-react', () => ({
+  Mic: () => null,
+  MicOff: () => null,
+  Volume2: () => null,
+  Download: () => null,
+  RefreshCw: () => null,
+  Send: () => null,
+}));
