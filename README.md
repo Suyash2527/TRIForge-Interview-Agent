@@ -14,8 +14,12 @@ An enterprise-grade, real-time AI Interviewing platform built to dynamically ass
 
 *   **Dynamic Conversational AI**
     Powered by Google's `gemini-3.5-flash` model. It doesn't just ask scripted questions—it adapts, probes edge cases, and generates live follow-ups based on the depth of the candidate's answers.
-*   **Live Scoring & Analytics Engine**
-    Automatically extracts a live score (0-100) from the AI's internal reasoning loop, providing real-time feedback without breaking the conversational immersion.
+*   **Browser Voice Integration 🎙️**
+    Leverages the native Web Speech API to provide hands-free interviewing. Candidates can use the microphone to speak their answers (Speech-to-Text) and can click to have the AI dictate questions out loud (Text-to-Speech).
+*   **Live Scoring & Interactive Radar Charts**
+    Automatically extracts a live score (0-100) from the AI's internal reasoning loop. Post-interview, it renders a stunning interactive Radar Chart (via `recharts`) mapping out Technical Depth, Communication, Problem Solving, and System Design.
+*   **Rich Markdown & PDF Exports 📄**
+    The AI's responses are beautifully formatted using `react-markdown`. Upon completing the interview, candidates can export a high-resolution PDF of their final grading report using `html2canvas` and `jsPDF`.
 *   **Enterprise-Grade Security**
     All LLM interactions pass through `/api/chat`, where they are intercepted and sanitized by a strict **Zod validation schema**. The application is hardened with strict HTTP Security Headers (CSP, HSTS).
 *   **Fully Automated CI/CD**
@@ -30,8 +34,10 @@ An enterprise-grade, real-time AI Interviewing platform built to dynamically ass
 | Category | Technology |
 | :--- | :--- |
 | **Framework** | Next.js 16 (App Router) |
-| **UI & Styling** | React 19, Tailwind CSS v4 |
-| **AI Integration** | `@google/genai` SDK (`gemini-3.5-flash`) |
+| **UI & Styling** | React 19, Tailwind CSS v4, Lucide React |
+| **AI Integration** | `@google/genai` SDK (`gemini-3.5-flash`), Web Speech API |
+| **Data Viz & Export** | `recharts`, `html2canvas`, `jsPDF` |
+| **Content Formatting** | `react-markdown`, `remark-gfm`, `@tailwindcss/typography` |
 | **Validation** | Zod Schema Validation |
 | **Testing & CI** | Jest, React Testing Library, GitHub Actions |
 | **Analytics** | Vercel Speed Insights |
