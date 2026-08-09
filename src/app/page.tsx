@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
@@ -199,6 +200,7 @@ export default function Home() {
         {/* TopNavBar */}
         <nav className="bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center w-full px-lg h-16 shrink-0 z-10">
           <div className="flex items-center gap-md">
+            <Image src="/logo.png" alt="TRIForge Logo" width={32} height={32} className="rounded" />
             <span className="text-[14px] font-bold tracking-tight text-primary">AI Interviewer</span>
           </div>
           <div className="flex items-center gap-lg">
