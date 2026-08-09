@@ -1,67 +1,73 @@
-# TRIForge AI Interview Agent
+# 🏛️ TRIForge AI Interview Agent
 
 ![Build Status](https://github.com/Suyash2527/TRIForge-Interview-Agent/actions/workflows/test.yml/badge.svg)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-An enterprise-grade, real-time AI Interviewing platform built to dynamically assess technical candidates. The application leverages the Google Gemini API to conduct conversational interviews, evaluate candidate responses against specific curricula, and provide a live, dynamically adjusting score.
+**[🔥 View Live Deployment](https://triforge-interview-agent.vercel.app/)**
 
-## 🚀 Features
+An enterprise-grade, real-time AI Interviewing platform built to dynamically assess technical candidates. Designed specifically for the **AI Cohort Hackathon**, this application acts as a senior AI engineering interviewer, evaluating candidates on RAG, Vector Databases, Prompt Engineering, and MCP based on their actual cohort progress.
 
-- **Dynamic Conversational AI:** Powered by Google's `gemini-3.5-flash` model via the `@google/genai` SDK.
-- **Live Scoring System:** Automatically extracts a live score (0-100) from the AI's internal reasoning to provide real-time candidate feedback.
-- **Professional Minimalist UI:** Built with Tailwind CSS v4 featuring a sleek, high-contrast, professional design and Times New Roman typography.
-- **Robust Security Baseline:** 
-  - **Zod Validation:** Strict request payload validation on the API layer to prevent prompt injection and payload flooding.
-  - **HTTP Security Headers:** Configured with CSP, HSTS, and X-Frame-Options to mitigate XSS and Clickjacking.
-- **Comprehensive Test Suite:** Fully configured with Jest and React Testing Library for both frontend component testing and backend API route mocking.
+---
+
+## 🚀 Key Features
+
+*   **Dynamic Conversational AI**
+    Powered by Google's `gemini-3.5-flash` model. It doesn't just ask scripted questions—it adapts, probes edge cases, and generates live follow-ups based on the depth of the candidate's answers.
+*   **Live Scoring & Analytics Engine**
+    Automatically extracts a live score (0-100) from the AI's internal reasoning loop, providing real-time feedback without breaking the conversational immersion.
+*   **Enterprise-Grade Security**
+    All LLM interactions pass through `/api/chat`, where they are intercepted and sanitized by a strict **Zod validation schema**. The application is hardened with strict HTTP Security Headers (CSP, HSTS).
+*   **Fully Automated CI/CD**
+    Backed by a comprehensive **Jest + JSDOM** test suite that mocks API calls and validates UI logic. Every push is verified by GitHub Actions.
+*   **Minimalist B2B Aesthetic**
+    Built with Tailwind CSS v4, featuring a sleek, high-contrast professional design utilizing strict Times New Roman typography to emulate a serious academic/enterprise environment.
+
+---
 
 ## 💻 Tech Stack
 
-- **Framework:** Next.js (App Router)
-- **UI Library:** React 19
-- **Styling:** Tailwind CSS v4
-- **AI Integration:** Google GenAI SDK
-- **Validation:** Zod
-- **Testing:** Jest + React Testing Library
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | Next.js 16 (App Router) |
+| **UI & Styling** | React 19, Tailwind CSS v4 |
+| **AI Integration** | `@google/genai` SDK (`gemini-3.5-flash`) |
+| **Validation** | Zod Schema Validation |
+| **Testing & CI** | Jest, React Testing Library, GitHub Actions |
+| **Analytics** | Vercel Speed Insights |
+
+---
 
 ## 🛠️ Getting Started
 
-### Prerequisites
-
+### 1. Prerequisites
 You will need Node.js installed and a valid Google Gemini API Key.
 
-### 1. Installation
-
+### 2. Installation
 Clone the repository and install the dependencies:
-
 ```bash
+git clone https://github.com/Suyash2527/TRIForge-Interview-Agent.git
+cd TRIForge-Interview-Agent
 npm install
 ```
 
-### 2. Environment Variables
-
-Create a `.env` or `.env.local` file in the root directory and add your Gemini API Key. 
-
-*(Note: The environment is currently optimized for `gemini-3.5-flash`. Ensure your API key has access to this model version).*
-
+### 3. Environment Variables
+Create a `.env.local` file in the root directory and add your API key:
 ```env
 GEMINI_API_KEY=your_google_gemini_api_key_here
 ```
 
-### 3. Run the Development Server
-
-Start the Next.js development server:
-
+### 4. Run the Development Server
 ```bash
 npm run dev
 ```
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+---
 
 ## 🧪 Testing
 
-The project includes a robust test suite that covers both the UI components and the Next.js API routes (including mocked Gemini API calls and error handling).
-
-To run the tests:
+The project includes a robust test suite covering both the UI components and Next.js API routes (including fully mocked GenAI responses).
 
 ```bash
 # Run tests once
@@ -71,12 +77,7 @@ npm run test
 npm run test:watch
 ```
 
-## 🔒 Security Architecture
+---
 
-This application employs an edge-ready security configuration:
-- All interactions with the LLM pass through `/api/chat`, where they are intercepted and validated by a strict `Zod` schema.
-- The `next.config.js` file enforces strict transport security and explicit Content Security Policies, ensuring the app is safe for production deployment on Vercel or similar edge networks.
-
-## 📝 License
-
-Internal Use - TRIForge
+## 📝 Hackathon Transparency
+Please refer to the [AI_USAGE.md](AI_USAGE.md) file in this repository for a detailed, transparent log of how Generative AI was utilized to pair-program and accelerate the development of this platform.
