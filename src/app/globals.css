@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@plugin "@tailwindcss/typography";
 @theme {
   --font-inter: "Times New Roman", Times, serif;
   --font-label-md: "Times New Roman", Times, serif;
