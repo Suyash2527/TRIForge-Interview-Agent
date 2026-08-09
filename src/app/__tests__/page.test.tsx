@@ -72,7 +72,7 @@ describe('Home (Chat Interface)', () => {
     fireEvent.change(input, { target: { value: 'This is my test answer.' } });
     
     // Submit the message
-    const submitButton = screen.getByRole('button', { name: /Submit Answer/i });
+    const submitButton = screen.getByRole('button', { name: /Submit/i });
     fireEvent.click(submitButton);
     
     // Verify user message is added to UI

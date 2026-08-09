@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom'
+import { TextEncoder, TextDecoder } from 'util';
 
+Object.assign(global, { TextDecoder, TextEncoder });
 // Mock matchMedia which is not present in JSDOM but might be used by components or dependencies
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
